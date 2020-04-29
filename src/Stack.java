@@ -1,3 +1,5 @@
+import java.util.EmptyStackException;
+
 public class Stack<T> implements StackInterface {
     private int size;
     private Node top;
@@ -40,6 +42,9 @@ public class Stack<T> implements StackInterface {
 
     @Override
     public T pop() {
+        if (top == null) {
+            throw new EmptyStackException();
+        }
         T value = top.value;
         if (top.next != null) {
             top = top.next;
@@ -52,6 +57,9 @@ public class Stack<T> implements StackInterface {
 
     @Override
     public T peek() {
+        if (top == null) {
+            throw new EmptyStackException();
+        }
         return top.value;
     }
 
@@ -71,6 +79,8 @@ public class Stack<T> implements StackInterface {
         trial.push(4);
         trial.push(5);
         trial.push(6);
+        System.out.println(trial.pop());
+        System.out.println(trial.pop());
         System.out.println(trial.getSize());
         System.out.println(trial.peek());
      //   trial.clear();
