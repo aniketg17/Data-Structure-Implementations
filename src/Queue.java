@@ -37,7 +37,12 @@ public class Queue<T> implements QueueInterface {
             throw new EmptyQueueException("Queue is empty");
         }
         T val = first.val;
-        first = first.next;
+        if (first.next != null) {
+            first = first.next;
+        } else {
+            first = null;
+            last = null;
+        }
         --size;
         return val;
     }
