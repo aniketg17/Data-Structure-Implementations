@@ -70,6 +70,7 @@ public class Queue<T> implements QueueInterface {
             temp.val = null;
         }
         first = null;
+        size = 0;
     }
 
     public static void main(String[] args) throws EmptyQueueException {
@@ -82,5 +83,7 @@ public class Queue<T> implements QueueInterface {
         System.out.println(my.dequeue());
         System.out.println(my.isEmpty());
         System.out.println(my.front());
+        my.clear();
+        System.out.println(my.isEmpty());
     }
 }
