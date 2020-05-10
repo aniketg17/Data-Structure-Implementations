@@ -13,7 +13,7 @@ public class Queue<T> implements QueueInterface {
         }
     }
 
-    private Queue() {
+    public Queue() {
         this.size = 0;
         this.first = null;
         this.last = null;

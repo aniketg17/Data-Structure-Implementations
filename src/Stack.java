@@ -14,7 +14,7 @@ public class Stack<T> implements StackInterface {
         }
     }
 
-    private Stack() {
+    public Stack() {
         this.size = 0;
         top = null;
     }
