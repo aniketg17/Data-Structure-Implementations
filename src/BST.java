@@ -1,12 +1,12 @@
 public class BST {
-    private Node root;
+    private TreeNode root;
 
-    private class Node {
+    private class TreeNode {
         int val;
-        Node left;
-        Node right;
+        TreeNode left;
+        TreeNode right;
 
-        public Node(int val) {
+        public TreeNode(int val) {
             this.val = val;
             left = null;
             right = null;
@@ -14,16 +14,16 @@ public class BST {
     }
 
     public BST(int val) {
-        this.root = new Node(val);
+        this.root = new TreeNode(val);
     }
 
-    public Node getRoot() {
+    public TreeNode getRoot() {
         return root;
     }
 
-    public Node insertNode(Node root, int key) {
+    public TreeNode insertNode(TreeNode root, int key) {
         if (root == null) {
-            root = new Node(key);
+            root = new TreeNode(key);
             return root;
         }
 
@@ -32,15 +32,14 @@ public class BST {
         } else {
             root.right = insertNode(root.right, key);
         }
-        return null;
+        return root;
     }
 
 
-    public boolean existVal(Node root, int key) {
+    public boolean existVal(TreeNode root, int key) {
         if (root == null) {
             return false;
         }
-
         if (key == root.val) {
             return true;
         }
@@ -53,20 +52,109 @@ public class BST {
     }
 
 
-    public void deleteNode() {
+    public TreeNode deleteNode(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.val > val) {
+            root.left = deleteNode(root.left, val);
+        } else if (root.val < val) {
+            root.right = deleteNode(root.right, val);
+        } else {
+            if (root.left != null && root.right != null) {
+                TreeNode pred = findPredecessor(root.left);
+                TreeNode reinsert = pred.left;
+                root.val = pred.val;
+                root.left = deleteNode(root.left, pred.val);
+                if (reinsert != null) {
+                    insertNode(root.left, reinsert.val);
+                }
+            } else if (root.left != null) {
+                root = root.left;
+            } else if (root.right != null) {
+                root = root.right;
+            } else {
+                root = null;
+            }
+        }
+        return root;
 
     }
 
+    public TreeNode findPredecessor(TreeNode traverse) {
+        while (traverse.right != null) {
+            traverse = traverse.right;
+        }
+        return traverse;
+    }
+
+    public TreeNode findSuccessor(TreeNode traverse) {
+        while (traverse.left != null) {
+            traverse = traverse.left;
+        }
+        return traverse;
+    }
+
+    public TreeNode findParent(TreeNode root, int val) {
+        if (root == null || root.val == val) {
+            return null;
+        }
+
+        if (root.left != null && root.left.val == val ||
+                root.right != null && root.right.val == val) {
+            return root;
+        }
+
+        if (val <= root.val) {
+            return findParent(root.left, val);
+        } else {
+            return findParent(root.right, val);
+        }
+    }
+
+
+    public void inorderWalkPrint(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderWalkPrint(root.left);
+        System.out.println(root.val);
+        inorderWalkPrint(root.right);
+    }
+
+    public void preorderWalkPrint(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.println(root.val);
+        inorderWalkPrint(root.left);
+        inorderWalkPrint(root.right);
+    }
+
+
+    public void postorderWalkPrint(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderWalkPrint(root.left);
+        inorderWalkPrint(root.right);
+        System.out.println(root.val);
+    }
 
     public static void main(String[] args) {
-        BST tree = new BST(5);
+        BST tree = new BST(6);
+        tree.insertNode(tree.getRoot(), 3);
+        tree.insertNode(tree.getRoot(), 1);
+        tree.insertNode(tree.getRoot(), 0);
         tree.insertNode(tree.getRoot(), 2);
+        tree.insertNode(tree.getRoot(), 4);
+        tree.insertNode(tree.getRoot(), 5);
         tree.insertNode(tree.getRoot(), 7);
 
-        System.out.println(tree.root.val);
-        System.out.println(tree.root.left.val);
-        System.out.println(tree.root.right.val);
-        System.out.println(tree.existVal(tree.root, 10));
+
+        tree.deleteNode(tree.getRoot(), 6);
+        tree.inorderWalkPrint(tree.getRoot());
     }
 
 }
