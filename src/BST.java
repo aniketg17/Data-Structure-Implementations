@@ -57,19 +57,15 @@ public class BST {
             return null;
         }
 
-        if (root.val > val) {
+        if (val < root.val) {
             root.left = deleteNode(root.left, val);
-        } else if (root.val < val) {
+        } else if (val > root.val) {
             root.right = deleteNode(root.right, val);
         } else {
             if (root.left != null && root.right != null) {
-                TreeNode pred = findPredecessor(root.left);
-                TreeNode reinsert = pred.left;
-                root.val = pred.val;
-                root.left = deleteNode(root.left, pred.val);
-                if (reinsert != null) {
-                    insertNode(root.left, reinsert.val);
-                }
+                TreeNode replacement = findPredecessor(root.left);
+                root.val = replacement.val;
+                root.left = deleteNode(root.left, replacement.val);
             } else if (root.left != null) {
                 root = root.left;
             } else if (root.right != null) {
@@ -79,7 +75,6 @@ public class BST {
             }
         }
         return root;
-
     }
 
     public TreeNode findPredecessor(TreeNode traverse) {
@@ -143,14 +138,17 @@ public class BST {
     }
 
     public static void main(String[] args) {
-        BST tree = new BST(6);
-        tree.insertNode(tree.getRoot(), 3);
+        BST tree = new BST(30);
+        tree.insertNode(tree.getRoot(), 6);
+        tree.insertNode(tree.getRoot(), 37);
         tree.insertNode(tree.getRoot(), 1);
-        tree.insertNode(tree.getRoot(), 0);
-        tree.insertNode(tree.getRoot(), 2);
-        tree.insertNode(tree.getRoot(), 4);
         tree.insertNode(tree.getRoot(), 5);
-        tree.insertNode(tree.getRoot(), 7);
+        tree.insertNode(tree.getRoot(), 4);
+        tree.insertNode(tree.getRoot(), 3);
+        tree.insertNode(tree.getRoot(), 19);
+        tree.insertNode(tree.getRoot(), 15);
+        tree.insertNode(tree.getRoot(), 14);
+        //tree.insertNode(tree.getRoot(), 7);
 
 
         tree.deleteNode(tree.getRoot(), 6);
