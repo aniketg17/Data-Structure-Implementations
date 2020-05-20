@@ -21,20 +21,47 @@ public class BST {
         return root;
     }
 
-    public TreeNode insertNode(TreeNode root, int key) {
+    public TreeNode insertNodeRecursive(TreeNode root, int key) {
         if (root == null) {
             root = new TreeNode(key);
             return root;
         }
 
         if (root.val >= key) {
-            root.left = insertNode(root.left, key);
+            root.left = insertNodeRecursive(root.left, key);
         } else {
-            root.right = insertNode(root.right, key);
+            root.right = insertNodeRecursive(root.right, key);
         }
         return root;
     }
 
+
+    public TreeNode insertNodeIterative(TreeNode root, int key) {
+        if (root == null) {
+            root = new TreeNode(key);
+            return root;
+        }
+
+        TreeNode traverse = root;
+        while (true) {
+            if (key <= traverse.val) {
+                if (traverse.left == null) {
+                    traverse.left = new TreeNode(key);
+                    break;
+                } else {
+                    traverse = traverse.left;
+                }
+            } else {
+                if (traverse.right == null) {
+                    traverse.right = new TreeNode(key);
+                    break;
+                } else {
+                    traverse = traverse.right;
+                }
+            }
+        }
+        return root;
+    }
 
     public boolean existVal(TreeNode root, int key) {
         if (root == null) {
@@ -139,19 +166,19 @@ public class BST {
 
     public static void main(String[] args) {
         BST tree = new BST(30);
-        tree.insertNode(tree.getRoot(), 6);
-        tree.insertNode(tree.getRoot(), 37);
-        tree.insertNode(tree.getRoot(), 1);
-        tree.insertNode(tree.getRoot(), 5);
-        tree.insertNode(tree.getRoot(), 4);
-        tree.insertNode(tree.getRoot(), 3);
-        tree.insertNode(tree.getRoot(), 19);
-        tree.insertNode(tree.getRoot(), 15);
-        tree.insertNode(tree.getRoot(), 14);
+        tree.insertNodeIterative(tree.getRoot(), 6);
+        tree.insertNodeIterative(tree.getRoot(), 37);
+        tree.insertNodeIterative(tree.getRoot(), 1);
+        tree.insertNodeIterative(tree.getRoot(), 5);
+        tree.insertNodeIterative(tree.getRoot(), 4);
+        tree.insertNodeIterative(tree.getRoot(), 3);
+        tree.insertNodeIterative(tree.getRoot(), 19);
+        tree.insertNodeIterative(tree.getRoot(), 15);
+        tree.insertNodeIterative(tree.getRoot(), 14);
         //tree.insertNode(tree.getRoot(), 7);
 
 
-        tree.deleteNode(tree.getRoot(), 6);
+   //     tree.deleteNode(tree.getRoot(), 6);
         tree.inorderWalkPrint(tree.getRoot());
     }
 
