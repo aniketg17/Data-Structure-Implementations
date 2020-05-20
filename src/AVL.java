@@ -88,32 +88,94 @@ public class AVL {
         return root;
     }
 
+
+    public Node delete(Node root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (key < root.val) {
+            root.left = delete(root.left, key);
+        } else if (key > root.val) {
+            root.right = delete(root.right, key);
+        } else {
+            if (root.left != null && root.right != null) {
+                Node replacement = predecessor(root.left);
+                root.val = replacement.val;
+                root.left = delete(root.left, replacement.val);
+            } else if (root.left != null) {
+                root = root.left;
+            } else if (root.right != null) {
+                root = root.right;
+            } else {
+                return null;
+            }
+        }
+
+        root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+        int difference = getHeight(root.left) - getHeight(root.right);
+
+        if (difference > 1 && getHeight(root.left.left) >= getHeight(root.left.right)) {
+            root = rotateRight(root);
+        } else if (difference < -1 && getHeight(root.right.right) >= getHeight(root.right.left)) {
+            root = rotateLeft(root);
+        } else if (difference > 1 && getHeight(root.left.left) < getHeight(root.left.right)) {
+            root.left = rotateLeft(root.left);
+            root = rotateRight(root);
+        } else if (difference < -1 && getHeight(root.right.right) < getHeight(root.right.left)) {
+            root.right = rotateRight(root.right);
+            root = rotateLeft(root);
+        }
+
+        return root;
+    }
+
+    public Node predecessor(Node root) {
+        while (root.right != null) {
+            root = root.right;
+        }
+        return root;
+    }
+
+
     public void preOrder(Node root) {
         if (root == null) {
             return;
         }
 
-        System.out.println(root.val + " ");
+        System.out.print(root.val + " ");
         preOrder(root.left);
         preOrder(root.right);
     }
 
     public static void main(String[] args) {
         AVL tree = new AVL();
-        tree.root = tree.insert(tree.getRoot(), 4);
-        tree.root = tree.insert(tree.getRoot(), 1);
-        tree.root = tree.insert(tree.getRoot(), 7);
-        tree.root = tree.insert(tree.getRoot(), 0);
-        tree.root = tree.insert(tree.getRoot(), 3);
-        tree.root = tree.insert(tree.getRoot(), 2);
 
-//        tree.root = tree.insert(tree.root, 10);
-//        tree.root = tree.insert(tree.root, 20);
-//        tree.root = tree.insert(tree.root, 30);
-//        tree.root = tree.insert(tree.root, 40);
-//        tree.root = tree.insert(tree.root, 50);
-//        tree.root = tree.insert(tree.root, 25);
+        tree.root = tree.insert(tree.getRoot(), 44);
+        tree.root = tree.insert(tree.getRoot(), 62);
+        tree.root = tree.insert(tree.getRoot(), 17);
+        tree.root = tree.insert(tree.getRoot(), 10);
+        tree.root = tree.insert(tree.getRoot(), 32);
+        tree.root = tree.insert(tree.getRoot(), 50);
+        tree.root = tree.insert(tree.getRoot(), 78);
+        tree.root = tree.insert(tree.getRoot(), 21);
+        tree.root = tree.insert(tree.getRoot(), 48);
+        tree.root = tree.insert(tree.getRoot(), 54);
+        tree.root = tree.insert(tree.getRoot(), 72);
+        tree.root = tree.insert(tree.getRoot(), 88);
+        tree.root = tree.insert(tree.getRoot(), 45);
+        tree.root = tree.insert(tree.getRoot(), 49);
+        tree.root = tree.insert(tree.getRoot(), 52);
+        tree.root = tree.insert(tree.getRoot(), 56);
+        tree.root = tree.insert(tree.getRoot(), 81);
+        tree.root = tree.insert(tree.getRoot(), 92);
 
+        tree.root = tree.delete(tree.getRoot(), 32);
+
+        System.out.println("pre:");
+        tree.preOrder(tree.root);
+        tree.root = tree.delete(tree.root, 10);
+        System.out.println("\npost:");
         tree.preOrder(tree.root);
     }
 }
