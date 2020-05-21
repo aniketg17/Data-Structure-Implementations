@@ -158,7 +158,7 @@ public class AVL {
         tree.root = tree.insert(tree.getRoot(), 32);
         tree.root = tree.insert(tree.getRoot(), 50);
         tree.root = tree.insert(tree.getRoot(), 78);
-        tree.root = tree.insert(tree.getRoot(), 21);
+        tree.root = tree.insert(tree.getRoot(), 34);
         tree.root = tree.insert(tree.getRoot(), 48);
         tree.root = tree.insert(tree.getRoot(), 54);
         tree.root = tree.insert(tree.getRoot(), 72);
@@ -170,11 +170,14 @@ public class AVL {
         tree.root = tree.insert(tree.getRoot(), 81);
         tree.root = tree.insert(tree.getRoot(), 92);
 
-        tree.root = tree.delete(tree.getRoot(), 32);
 
         System.out.println("pre:");
         tree.preOrder(tree.root);
-        tree.root = tree.delete(tree.root, 10);
+
+        tree.root = tree.delete(tree.getRoot(), 44);
+
+
+        //tree.root = tree.delete(tree.root, 10);
         System.out.println("\npost:");
         tree.preOrder(tree.root);
     }
