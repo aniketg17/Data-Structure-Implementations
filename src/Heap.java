@@ -12,103 +12,13 @@ public class Heap {
         int[] unsorted = {6,3,5,2,8,1};
         Heap heap = new Heap(unsorted);
 
-        int[] sorted = heap.heapSortDescendingRecursive(unsorted);
+        int[] sorted = heap.heapSortDescending();
 
         for (int x : sorted) {
             System.out.print(x + " ");
         }
         System.out.println();
     }
-
-
-    public int[] heapSortDescendingRecursive(int[] array) {
-        heapifyRecursiveMin(0);
-        while (heapSize > 0) {
-            int temp = array[0];
-            array[0] = array[heapSize - 1];
-            array[heapSize - 1] = temp;
-
-            --heapSize;
-
-            heapifyRecursiveMin(0);
-        }
-        return array;
-    }
-
-    public void heapifyRecursiveMin(int idx) {
-        if (idx >=  heapSize) {
-            return;
-        }
-        int left = getLeft(idx);
-        int right = getRight(idx);
-
-        heapifyRecursiveMin(left);
-        heapifyRecursiveMin(right);
-
-        int min = idx;
-
-        if (left < heapSize && array[left] < array[min]) {
-            min = left;
-        }
-
-        if (right < heapSize && array[right] < array[min]) {
-            min = right;
-        }
-
-        if (min != idx) {
-            int temp = array[min];
-            array[min] = array[idx];
-            array[idx] = temp;
-        }
-    }
-
-
-
-
-    public int[] heapSortAscendingRecursive(int[] array) {
-        heapifyRecursiveMax(0);
-        while (heapSize > 0) {
-            int temp = array[0];
-            array[0] = array[heapSize - 1];
-            array[heapSize - 1] = temp;
-
-            --heapSize;
-
-            heapifyRecursiveMax(0);
-        }
-        return array;
-    }
-
-    public void heapifyRecursiveMax(int idx) {
-        if (idx >= heapSize) {
-            return;
-        }
-        int left = getLeft(idx);
-        int right = getRight(idx);
-
-        heapifyRecursiveMax(left);
-        heapifyRecursiveMax(right);
-
-
-        int largest = idx;
-
-        if (left < heapSize && array[left] > array[largest]) {
-            largest = left;
-        }
-        if (right < heapSize && array[right] > array[largest]) {
-            largest = right;
-        }
-
-        if (largest != idx) {
-            int temp = array[largest];
-            array[largest] = array[idx];
-            array[idx] = temp;
-        }
-    }
-
-
-
-
 
     public int[] heapSortDescending() {
         int[] heaped = buildMinHeap(array);
@@ -154,10 +64,6 @@ public class Heap {
             minHeapify(array, smallest);
         }
     }
-
-
-
-
 
 
 
