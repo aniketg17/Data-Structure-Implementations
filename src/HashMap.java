@@ -52,27 +52,28 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public Value put(Key k, Value v) {
-        if (getLoadFactor() > MAX_LOAD) {
-            increaseArraySize();
-        }
-        int hashcode = getHashCode(k);
-        assert (hashcode != -1);
-        HashNode<Key, Value> insert = new HashNode<>(k, v);
-        if (array[hashcode] == null) {
-            array[hashcode] = insert;
-            ++numberOfKeys;
-        } else {
-            boolean duplicate = false;
-            for (HashNode<Key, Value> node = array[hashcode]; node != null; node = node.next) {
-                if (node.key.equals(k)) {
-                    node.value = v;
-                    duplicate = true;
-                }
+        if (k != null && v != null) {
+            if (getLoadFactor() > MAX_LOAD) {
+                increaseArraySize();
             }
-            if (!duplicate) {
-                insert.next = array[hashcode];
+            int hashcode = getHashCode(k);
+            HashNode<Key, Value> insert = new HashNode<>(k, v);
+            if (array[hashcode] == null) {
                 array[hashcode] = insert;
                 ++numberOfKeys;
+            } else {
+                boolean duplicate = false;
+                for (HashNode<Key, Value> node = array[hashcode]; node != null; node = node.next) {
+                    if (node.key.equals(k)) {
+                        node.value = v;
+                        duplicate = true;
+                    }
+                }
+                if (!duplicate) {
+                    insert.next = array[hashcode];
+                    array[hashcode] = insert;
+                    ++numberOfKeys;
+                }
             }
         }
         return v;
@@ -103,6 +104,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public Value remove(Key k) {
+        if (k == null) return null;
         int hash = getHashCode(k);
         Value value = null;
         HashNode<Key, Value> prev = null;
@@ -145,6 +147,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public Value get(Key k) {
+        if (k == null) return null;
         int hash = getHashCode(k);
         for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
             if (node.key.equals(k)) {
@@ -155,6 +158,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public Value replace(Key k, Value v) {
+        if (k == null || v == null) return null;
         int hash = getHashCode(k);
         for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
             if (node.key.equals(k)) {
@@ -166,6 +170,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public boolean containsKey(Key k) {
+        if (k == null) return false;
         int hash = getHashCode(k);
         for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
             if (node.key.equals(k)) {
@@ -176,6 +181,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public boolean containsValue(Value v) {
+        if (v == null) return false;
         for (HashNode<Key, Value> node : array) {
             if (node != null) {
                 for (HashNode<Key, Value> trav = node; trav != null; trav = trav.next) {
@@ -196,20 +202,21 @@ public class HashMap<Key, Value> implements HashMapInterface{
     public static void main(String[] args) {
         HashMap<Integer, Integer> hash = new HashMap<>();
         System.out.println(hash.isEmpty());
-        hash.put(2, 4);
-
-        hash.put(4,9);
-
-        hash.put(15,1);
-        hash.put(30, 2);
-        hash.put(80, 8);
-
-        System.out.println(hash.get(80));
-        hash.remove(15);
-        hash.remove(2);
-        hash.remove(4);
-        hash.remove(30);
-        hash.remove(80);
+        hash.put(null, null);
+//        hash.put(2, 4);
+//
+//        hash.put(4,9);
+//
+//        hash.put(15,1);
+//        hash.put(30, 2);
+//        hash.put(80, 8);
+//
+//        System.out.println(hash.get(80));
+//        hash.remove(15);
+//        hash.remove(2);
+//        hash.remove(4);
+//        hash.remove(30);
+//        hash.remove(80);
         System.out.println(hash.isEmpty());
     }
 }
