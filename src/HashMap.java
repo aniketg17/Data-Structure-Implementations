@@ -1,6 +1,21 @@
 public class HashMap<Key, Value> implements HashMapInterface{
-    final private int TREEIFY_FACTOR = 8;
     private int size;
+
+    private class HashNode<Key, Value> {
+        Key key;
+        Value value;
+        HashNode<Key, Value> next;
+
+        public HashNode(Key key, Value value) {
+            this.key = key;
+            this.value = value;
+            next = null;
+        }
+    }
+
+    public HashMap() {
+        this.size = 0;
+    }
 
     @Override
     public void clear() {
