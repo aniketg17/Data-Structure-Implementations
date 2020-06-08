@@ -116,11 +116,17 @@ public class HashMap<Key, Value> implements HashMapInterface{
         numberOfSlots = array.length;
     }
 
-    public Value get(Object k) {
+    public Value get(Key k) {
+        int hash = getHashCode(k);
+        for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
+            if (node.key.equals(k)) {
+                return node.value;
+            }
+        }
         return null;
     }
 
-    public Value replace(Object k, Object v) {
+    public Value replace(Key k, Value v) {
         return null;
     }
 
