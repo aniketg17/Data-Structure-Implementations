@@ -127,6 +127,13 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public Value replace(Key k, Value v) {
+        int hash = getHashCode(k);
+        for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
+            if (node.key.equals(k)) {
+                node.value = v;
+                return v;
+            }
+        }
         return null;
     }
 
