@@ -5,7 +5,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     private HashNode<Key, Value>[] array;
     private int numberOfKeys;
     private int numberOfSlots;
-    private final int INITIAL_ARRAY_SIZE = 13;
+    private final int INITIAL_ARRAY_SIZE = 5;
     private int currentArraySize;
     private final double MAX_LOAD = 0.75;
     private final double MIN_LOAD = 0.25;
@@ -60,6 +60,8 @@ public class HashMap<Key, Value> implements HashMapInterface{
         HashNode<Key, Value> insert = new HashNode<>(k, v);
         if (array[hashcode] == null) {
             array[hashcode] = insert;
+            ++size;
+            ++numberOfKeys;
         } else {
             boolean duplicate = false;
             for (HashNode<Key, Value> node = array[hashcode]; node != null; node = node.next) {
@@ -80,9 +82,17 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     private void increaseArraySize() {
         HashNode<Key, Value>[] newArray = new HashNode[2 * currentArraySize];
-        System.arraycopy(array, 0, newArray, 0, array.length);
+        HashNode<Key, Value>[] oldArray = array;
         array = newArray;
         numberOfSlots = array.length;
+
+        for (HashNode<Key, Value> node : oldArray) {
+            if (node != null) {
+                for (HashNode<Key, Value> trav = node; trav != null; trav = trav.next) {
+                    put(trav.key, trav.value);
+                }
+            }
+        }
     }
 
     public int getHashCode(Key k) {
@@ -122,9 +132,17 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     private void decreaseArraySize() {
         HashNode<Key, Value>[] newArray = new HashNode[(int) (0.5 * currentArraySize)];
-        System.arraycopy(array, 0, newArray, 0, array.length);
+        HashNode<Key, Value>[] oldArray = array;
         array = newArray;
         numberOfSlots = array.length;
+
+        for (HashNode<Key, Value> node : oldArray) {
+            if (node != null) {
+                for (HashNode<Key, Value> trav = node; trav != null; trav = trav.next) {
+                    put(trav.key, trav.value);
+                }
+            }
+        }
     }
 
     public Value get(Key k) {
@@ -183,5 +201,6 @@ public class HashMap<Key, Value> implements HashMapInterface{
         hash.put(4,1);
         //hash.put(4,1);
         hash.put(15,1);
+        hash.put(15,9);
     }
 }
