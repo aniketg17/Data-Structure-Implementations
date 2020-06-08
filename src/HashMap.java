@@ -1,7 +1,6 @@
 import java.util.Arrays;
 
 public class HashMap<Key, Value> implements HashMapInterface{
-    private int size;
     private HashNode<Key, Value>[] array;
     private int numberOfKeys;
     private int numberOfSlots;
@@ -36,19 +35,20 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     public HashMap() {
         this.numberOfSlots = INITIAL_ARRAY_SIZE;
-        this.size = 0;
+        this.numberOfKeys = 0;
         currentArraySize = INITIAL_ARRAY_SIZE;
         array = new HashNode[INITIAL_ARRAY_SIZE]; // cast because generic arrays not allowed
     }
 
     @Override
     public void clear() {
+        numberOfKeys = 0;
         Arrays.fill(array, null);
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return numberOfKeys == 0;
     }
 
     public Value put(Key k, Value v) {
@@ -60,7 +60,6 @@ public class HashMap<Key, Value> implements HashMapInterface{
         HashNode<Key, Value> insert = new HashNode<>(k, v);
         if (array[hashcode] == null) {
             array[hashcode] = insert;
-            ++size;
             ++numberOfKeys;
         } else {
             boolean duplicate = false;
@@ -73,7 +72,6 @@ public class HashMap<Key, Value> implements HashMapInterface{
             if (!duplicate) {
                 insert.next = array[hashcode];
                 array[hashcode] = insert;
-                ++size;
                 ++numberOfKeys;
             }
         }
@@ -81,11 +79,12 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     private void increaseArraySize() {
+        numberOfKeys = 0;
         HashNode<Key, Value>[] newArray = new HashNode[2 * currentArraySize];
         HashNode<Key, Value>[] oldArray = array;
         array = newArray;
         numberOfSlots = array.length;
-
+        currentArraySize = array.length;
         for (HashNode<Key, Value> node : oldArray) {
             if (node != null) {
                 for (HashNode<Key, Value> trav = node; trav != null; trav = trav.next) {
@@ -109,10 +108,10 @@ public class HashMap<Key, Value> implements HashMapInterface{
         HashNode<Key, Value> prev = null;
         for (HashNode<Key, Value> node = array[hash]; node != null; node = node.next) {
             if (node.key.equals(k)) {
+                --numberOfKeys;
                 if (prev == null) {
                     value = node.value;
                     array[hash] = array[hash].next;
-                    return value;
                 } else {
                     value = prev.next.value;
                     prev.next = node.next;
@@ -121,8 +120,6 @@ public class HashMap<Key, Value> implements HashMapInterface{
                 prev = node;
             }
         }
-        --numberOfKeys;
-
         if (getLoadFactor() <= MIN_LOAD) {
             decreaseArraySize();
         }
@@ -131,10 +128,12 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     private void decreaseArraySize() {
+        numberOfKeys = 0;
         HashNode<Key, Value>[] newArray = new HashNode[(int) (0.5 * currentArraySize)];
         HashNode<Key, Value>[] oldArray = array;
         array = newArray;
         numberOfSlots = array.length;
+        currentArraySize = array.length;
 
         for (HashNode<Key, Value> node : oldArray) {
             if (node != null) {
@@ -191,16 +190,26 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     @Override
     public int size() {
-        return size;
+        return numberOfKeys;
     }
 
     public static void main(String[] args) {
         HashMap<Integer, Integer> hash = new HashMap<>();
         System.out.println(hash.isEmpty());
         hash.put(2, 4);
-        hash.put(4,1);
-        //hash.put(4,1);
+
+        hash.put(4,9);
+
         hash.put(15,1);
-        hash.put(15,9);
+        hash.put(30, 2);
+        hash.put(80, 8);
+
+        System.out.println(hash.get(80));
+        hash.remove(15);
+        hash.remove(2);
+        hash.remove(4);
+        hash.remove(30);
+        hash.remove(80);
+        System.out.println(hash.isEmpty());
     }
 }
