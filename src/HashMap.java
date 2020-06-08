@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class HashMap<Key, Value> implements HashMapInterface{
     private int size;
     private HashNode<Key, Value>[] array;
@@ -6,7 +8,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
     private final int INITIAL_ARRAY_SIZE = 13;
     private int currentArraySize;
     private final double MAX_LOAD = 0.75;
-
+    private final double MIN_LOAD = 0.25;
 
     private static class HashNode<Key, Value> {
         Key key;
@@ -41,7 +43,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     @Override
     public void clear() {
-
+        Arrays.fill(array, null);
     }
 
     @Override
@@ -59,11 +61,20 @@ public class HashMap<Key, Value> implements HashMapInterface{
         if (array[hashcode] == null) {
             array[hashcode] = insert;
         } else {
-            insert.next = array[hashcode];
-            array[hashcode] = insert;
+            boolean duplicate = false;
+            for (HashNode<Key, Value> node = array[hashcode]; node != null; node = node.next) {
+                if (node.key.equals(k)) {
+                    node.value = v;
+                    duplicate = true;
+                }
+            }
+            if (!duplicate) {
+                insert.next = array[hashcode];
+                array[hashcode] = insert;
+                ++size;
+                ++numberOfKeys;
+            }
         }
-        ++size;
-        ++numberOfKeys;
         return v;
     }
 
@@ -102,7 +113,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
         }
         --numberOfKeys;
 
-        if (getLoadFactor() <= 0.25) {
+        if (getLoadFactor() <= MIN_LOAD) {
             decreaseArraySize();
         }
 
@@ -172,7 +183,5 @@ public class HashMap<Key, Value> implements HashMapInterface{
         hash.put(4,1);
         //hash.put(4,1);
         hash.put(15,1);
-
-
     }
 }
