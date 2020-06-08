@@ -1,5 +1,19 @@
 import java.util.Arrays;
 
+
+/**
+ * <h1>My HashMap Implementation</h1>
+ * My implementation of a generic HashMap
+ * using chaining for collision resolution
+ * and table resizing based on load factor.
+ *
+ * All methods are implemented in a similar fashion
+ * as that of the HashMap in Utility package
+ *
+ * @author  Aniket Kumar Gupta
+ */
+
+
 public class HashMap<Key, Value> implements HashMapInterface{
     private HashNode<Key, Value>[] array;
     private int numberOfKeys;
@@ -97,7 +111,7 @@ public class HashMap<Key, Value> implements HashMapInterface{
 
     public int getHashCode(Key k) {
         if (k != null) {
-            return k.hashCode() % numberOfSlots;
+            return (k.hashCode() & 0x7fffffff) % numberOfSlots;
         } else {
             return -1;
         }
@@ -200,23 +214,21 @@ public class HashMap<Key, Value> implements HashMapInterface{
     }
 
     public static void main(String[] args) {
-        HashMap<Integer, Integer> hash = new HashMap<>();
+        HashMap<String, Integer> hash = new HashMap<>();
         System.out.println(hash.isEmpty());
-        hash.put(null, null);
-//        hash.put(2, 4);
-//
-//        hash.put(4,9);
-//
-//        hash.put(15,1);
-//        hash.put(30, 2);
-//        hash.put(80, 8);
-//
-//        System.out.println(hash.get(80));
-//        hash.remove(15);
-//        hash.remove(2);
-//        hash.remove(4);
-//        hash.remove(30);
-//        hash.remove(80);
+
+        hash.put("Aniket", 1);
+        hash.put("Aniket", 2);
+        hash.put("Gupta", 1);
+        hash.put("Hinal", 1);
+        hash.put("Jajal", 1);
+        hash.put("Robert", 1);
+
+        hash.put("Kumar", 1);
+        hash.put("Neetu", 1);
+        hash.put("Soni", 1);
+        hash.put("Anil", 1);
+
         System.out.println(hash.isEmpty());
     }
 }
