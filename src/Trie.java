@@ -23,6 +23,9 @@ public class Trie<Value> {
             root = new TrieNode();
         }
         if (charCount == key.length()) {
+            if (root.val == null) {
+                ++size;
+            }
             root.val = value;
             return root;
         }
@@ -31,9 +34,23 @@ public class Trie<Value> {
         return root;
     }
 
+    public Value get(String key) {
+        return get(root, key, 0);
+    }
+
+    public Value get(TrieNode root, String key, int charCount) {
+        if (root == null) return null;
+        if (charCount == key.length()) return (Value) root.val;
+        char nextChar = key.charAt(charCount);
+        return get(root.next[nextChar], key, charCount + 1);
+    }
+
     public static void main(String[] args) {
-        Trie<Integer> bsdk = new Trie<>();
-        bsdk.insert("Aniket", 1);
-        bsdk.insert("Ani", 3);
+        Trie<Integer> trial = new Trie<>();
+        trial.insert("Aniket", 1);
+        trial.insert("Ani", 3);
+        trial.insert("Jerome", 9);
+
+        System.out.println(trial.size);
     }
 }
