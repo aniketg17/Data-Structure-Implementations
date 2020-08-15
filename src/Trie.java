@@ -1,3 +1,7 @@
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Trie<Value> {
 
     private static final int MAX_INDICES = 256; // change depending on need. currently suited for ASCII
@@ -52,5 +56,19 @@ public class Trie<Value> {
         trial.insert("Jerome", 9);
 
         System.out.println(trial.size);
+    }
+
+    public Iterator<String> collect() {
+        return collectAll();
+    }
+
+    public Iterator<String> collectAll() {
+        Queue<String> queue = new LinkedList<>();
+        addToQueue(root, queue);
+        return (Iterator<String>) queue;
+    }
+
+    private void addToQueue(TrieNode root, Queue<String> queue) {
+
     }
 }
