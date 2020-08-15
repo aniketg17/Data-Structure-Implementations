@@ -15,3 +15,6 @@ The purpose behind these was to prepare myself for my upcoming 'Data Structures 
 7. AVL Tree
 8. Trie
 9. Additional Exception classes
+
+## Usage
+To use any of these structures, store the relevant file into the src folder of your own project folder. From there, you can directly call the relevant data structure and use it freely.
